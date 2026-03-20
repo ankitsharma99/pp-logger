@@ -13,12 +13,12 @@ public class ConsoleSink implements Sink {
 
     @Override
     public void write(String formattedMessage, LogMessage originalMessage) {
-
+        System.out.println(formattedMessage);
     }
 
     @Override
     public void flush() {
-
+        System.out.flush();
     }
 
     @Override
