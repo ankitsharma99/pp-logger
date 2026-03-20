@@ -8,12 +8,12 @@ import java.time.format.DateTimeFormatter;
 public class DefaultLogFormatter implements LogFormatter {
     private final DateTimeFormatter dateTimeFormatter;
 
-    public DefaultLogFormatter(DateTimeFormatter dateTimeFormatter) {
-        this.dateTimeFormatter = dateTimeFormatter;
+    public DefaultLogFormatter(String dateTimeFormatter) {
+        this.dateTimeFormatter = DateTimeFormatter.ofPattern(dateTimeFormatter);
     }
 
     public DefaultLogFormatter() {
-        this(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss,SSS"));
+        this("yyyy-MM-dd HH:mm:ss,SSS");
     }
 
     @Override
