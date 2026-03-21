@@ -39,6 +39,33 @@ public class LoggerDemo {
         writeModeAsyncAndSingleThreaded();
 
         customSinkExample();
+
+        consoleLoggingWithTrackingId();
+    }
+
+    private static void consoleLoggingWithTrackingId() {
+        System.out.println("=== Console Logging with Tracking ID Example ===");
+
+        LoggerConfig loggerConfig = LoggerConfig.builder()
+                .timeStampFormat("yyyy-MM-dd HH:mm:ss,SSS")
+                .defaultLoggingLevel(LoggingLevel.DEBUG)
+                .threadingModel(ThreadingModel.SINGLE_THREADED)
+                .writeMode(WriteMode.SYNC)
+                .addSinkMapping(List.of(LoggingLevel.DEBUG,
+                                LoggingLevel.INFO,
+                                LoggingLevel.WARN,
+                                LoggingLevel.ERROR,
+                                LoggingLevel.FATAL),
+                        SinkType.CONSOLE_SINK, Map.of())
+                .build();
+
+        PhonePeLogger logger = new PhonePeLogger(loggerConfig);
+        String trackingId = "txn-12345";
+        logger.info("com.app.transaction", "Processing transaction with tracking ID ", trackingId);
+        logger.fatal("com.app.transaction", "Transaction failed with tracking ID ", trackingId);
+        logger.shutdown();
+
+        System.out.println("=== End of Console Logging with Tracking ID Example ===");
     }
 
     private static void customSinkExample() {
