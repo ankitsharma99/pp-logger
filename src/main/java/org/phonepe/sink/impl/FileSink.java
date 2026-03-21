@@ -12,6 +12,7 @@ import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
+import static org.phonepe.utils.LoggingConstants.*;
 
 public class FileSink implements Sink {
     private String filePath;
@@ -22,13 +23,13 @@ public class FileSink implements Sink {
 
     @Override
     public void init(Map<String, String> properties) {
-        this.filePath = properties.get("file_location");
+        this.filePath = properties.get(FILE_LOCATION);
         if (filePath == null || filePath.isBlank()) {
             throw new IllegalArgumentException("file_location is required for FileSink");
         }
 
-        long maxFileSizeBytes = parseLong(properties.get("max_file_size_bytes"), 10 * 1024 * 1024);
-        int maxBackupFiles = parseInt(properties.get("max_backup_files"), 5);
+        long maxFileSizeBytes = properties.containsKey(MAX_FILE_SIZE_BYTES) ? parseLong(properties.get(MAX_FILE_SIZE_BYTES)) : 10 * 1024 * 1024;
+        int maxBackupFiles = properties.containsKey(MAX_BACKUP_FILES) ? parseInt(properties.get(MAX_BACKUP_FILES)) : 5;
 
         this.rotationPolicy = new LogRotationPolicy(maxFileSizeBytes, maxBackupFiles);
 
