@@ -5,7 +5,7 @@ import org.phonepe.sink.Sink;
 
 import java.util.Map;
 
-public class DatabaseConsoleSink implements Sink {
+public class DatabaseSink implements Sink {
     @Override
     public void init(Map<String, String> properties) {
 

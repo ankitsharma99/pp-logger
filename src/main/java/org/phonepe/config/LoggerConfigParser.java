@@ -25,7 +25,7 @@ public class LoggerConfigParser {
         return parseMultiSection(content);
     }
 
-    private static LoggerConfig parseMultiSection(String content) {
+    public static LoggerConfig parseMultiSection(String content) {
         String[] lines = content.split(LINE_DELIMITER_REGEX);
 
         Map<String, String> globalProps = new LinkedHashMap<>();

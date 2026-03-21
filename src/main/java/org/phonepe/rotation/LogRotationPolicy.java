@@ -20,7 +20,6 @@ public class LogRotationPolicy {
     }
 
     public LogRotationPolicy() {
-        // TODO: Make these defaults configurable via properties: Default : 10 MB max file size, 5 backup files
         this(10 * 1024 * 1024, 5);
     }
 
