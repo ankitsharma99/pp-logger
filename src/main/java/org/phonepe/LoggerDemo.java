@@ -8,6 +8,7 @@ import org.phonepe.enums.LoggingLevel;
 import org.phonepe.enums.SinkType;
 import org.phonepe.enums.ThreadingModel;
 import org.phonepe.enums.WriteMode;
+import org.phonepe.sink.impl.DatabaseSink;
 
 import java.io.File;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Main {
+public class LoggerDemo {
     public static void main(String[] args) {
         basicConsoleLogging();
 
@@ -36,6 +37,28 @@ public class Main {
         writeModeSyncAndMultiThreaded();
 
         writeModeAsyncAndSingleThreaded();
+
+        customSinkExample();
+    }
+
+    private static void customSinkExample() {
+        System.out.println("=== Custom Sink Example ===");
+
+        DatabaseSink customDbSink = new DatabaseSink();
+        customDbSink.init(Map.of());
+
+        LoggerConfig loggerConfig = LoggerConfig.builder()
+                .timeStampFormat("yyyy-MM-dd HH:mm:ss,SSS")
+                .defaultLoggingLevel(LoggingLevel.DEBUG)
+                .threadingModel(ThreadingModel.SINGLE_THREADED)
+                .writeMode(WriteMode.SYNC)
+                .addSinkMapping(List.of(LoggingLevel.DEBUG, LoggingLevel.INFO), customDbSink)
+                .build();
+
+        PhonePeLogger logger = new PhonePeLogger(loggerConfig);
+        logger.debug("com.app.custom", "This is a debug message to custom DB sink");
+        logger.info("com.app.custom", "This is an info message to custom DB sink");
+        logger.shutdown();
     }
 
     private static void writeModeAsyncAndSingleThreaded() {

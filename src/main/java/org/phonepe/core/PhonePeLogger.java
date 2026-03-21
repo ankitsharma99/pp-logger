@@ -98,7 +98,6 @@ public class PhonePeLogger {
         if (loggerConfig.getWriteMode() == WriteMode.SYNC) {
             writeSync(sink, formattedMessage, message);
         } else {
-            // For ASYNC mode, we would submit a task to the executor service to write the log
             writeAsync(sink, formattedMessage, message);
         }
     }

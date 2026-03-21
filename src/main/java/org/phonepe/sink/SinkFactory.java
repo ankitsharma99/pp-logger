@@ -16,6 +16,19 @@ public class SinkFactory {
         };
         sink.init(properties);
         return sink;
+    }
 
+    public static Sink createCustomSink(String className, Map<String, String> properties) {
+        try {
+            Class<?> clazz = Class.forName(className);
+            if (!Sink.class.isAssignableFrom(clazz)) {
+                throw new IllegalArgumentException("Class " + className + " does not implement Sink interface");
+            }
+            Sink sink = (Sink) clazz.getDeclaredConstructor().newInstance();
+            sink.init(properties);
+            return sink;
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException("Failed to create custom sink: " + className, e);
+        }
     }
 }
